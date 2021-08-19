@@ -61,7 +61,7 @@ RUN \
 # ------------------------------------------------------------------------------
 # Target container for running the node
 # ------------------------------------------------------------------------------
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # Install dependencies
 RUN apt-get update -y && \
@@ -74,21 +74,10 @@ COPY --from=avalanche \
   /go/src/github.com/ava-labs/avalanchego/build/avalanchego \
   /app/avalanchego
 
-# Install pre-upgrade
+# Install evm plugin
 COPY --from=avalanche \
-  /go/src/github.com/ava-labs/avalanchego/build/avalanchego-preupgrade/avalanchego-process \
-  /app/avalanchego-preupgrade/avalanchego-process
-COPY --from=avalanche \
-  /go/src/github.com/ava-labs/avalanchego/build/avalanchego-preupgrade/plugins/evm \
-  /app/avalanchego-preupgrade/plugins/evm
-
-# Install latest
-COPY --from=avalanche \
-  /go/src/github.com/ava-labs/avalanchego/build/avalanchego-latest/avalanchego-process \
-  /app/avalanchego-latest/avalanchego-process
-COPY --from=avalanche \
-  /go/src/github.com/ava-labs/avalanchego/build/avalanchego-latest/plugins/evm \
-  /app/avalanchego-latest/plugins/evm
+  /go/src/github.com/ava-labs/avalanchego/build/plugins/evm \
+  /app/plugins/evm
 
 # Install avalanche snowplow
 COPY --from=snowplow \
